@@ -57,6 +57,16 @@ function handleCardClick() {
         addClickEventListenersToCards();
         removeClickEventListeners();
         cont++;
+        // If this was the last match, freeze the timer to the exact finish time
+        if (cont === 10) {
+          clearInterval(intervalId);
+          game = false;
+          elapsedTime = Date.now() - startTime;
+          // compute final minutes and seconds and update UI immediately
+          const finalSecs = String(Math.floor((elapsedTime / 1000) % 60)).padStart(2, "0");
+          const finalMins = String(Math.floor((elapsedTime / (1000 * 60)) % 60)).padStart(2, "0");
+          time.textContent = `${finalMins}:${finalSecs}`;
+        }
       }, 500);
     } else {
       setTimeout(() => {
