@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="style.css" />
     <title>MemoTest</title>
   </head>
-  <body>
-    <div>
-      <div>
-        <button class="btn">🔄 New game</button>
-      </div>
-      <div class="timer">00:00</div>
-      <div class="clicks">Clicks: 0</div>
+ <body>
+  <div class="app">
+    <div class="hud">
+      <div class="stat"><span class="label">Time</span><span class="timer">00:00</span></div>
+      <div class="stat"><span class="label">Clicks</span><span class="clicks">0</span></div>
+      <button class="btn" id="new-game">🔄 New game</button>
     </div>
-    <section class="cards-section">
+    
+        <section id="cards-section" class="cards-section board" role="region" aria-label="Memory cards board">
       <div class="card">
         <div class="card-container">
           <div class="card-front">
@@ -217,6 +217,7 @@
         </div>
       </div>
     </section>
+  </div>
+    <script src="script.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>

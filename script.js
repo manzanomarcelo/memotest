@@ -16,7 +16,6 @@ function updateTime() {
   elapsedTime = Date.now() - startTime;
   secs = Math.floor((elapsedTime / 1000) % 60);
   mins = Math.floor((elapsedTime / (1000 * 60)) % 60);
-
   secs = pad(secs);
   mins = pad(mins);
   time.textContent = `${mins}:${secs}`;
