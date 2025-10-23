@@ -51,7 +51,7 @@ function handleCardClick() {
     if (img1 === img2) {
       setTimeout(() => {
         flippedCards.forEach((card) => {
-          card.classList.add("matched");
+          card.classList.add("flip");
         });
         flippedCards = [];
         addClickEventListenersToCards();
@@ -65,7 +65,7 @@ function handleCardClick() {
         });
         addClickEventListenersToCards();
         flippedCards = [];
-      }, 1000);
+      }, 500);
     }
   }
 }
@@ -76,7 +76,7 @@ function addClickEventListenersToCards() {
 }
 function removeClickEventListeners() {
   cardContainers.forEach((card) => {
-    if (card.classList.contains("matched") || card.classList.contains("flip")) {
+    if (/*card.classList.contains("matched") || */card.classList.contains("flip")) {
       card.removeEventListener("click", handleCardClick);
     } else {
       card.addEventListener("click", handleCardClick);
@@ -113,7 +113,7 @@ btn.addEventListener("click", function () {
   time.textContent = "00:00";
   clicks.textContent = 0;
   cardContainers.forEach((card) => {
-    card.classList.remove("flip", "matched");
+    card.classList.remove("flip", /*"matched"*/);
   });
   addClickEventListenersToCards();
   const shuffledCards = shuffleArray(cards);
