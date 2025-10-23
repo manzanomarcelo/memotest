@@ -5,8 +5,8 @@ const btn = document.querySelector(".btn");
 const clicks = document.querySelector(".clicks");
 let startTime = 0;
 let elapsedTime = 0;
-let mins = 0;
-let secs = 0;
+let mins = "00";
+let secs = "00";
 let game = false;
 let intervalId;
 let flippedCards = [];
@@ -20,10 +20,7 @@ function updateTime() {
   mins = pad(mins);
   time.textContent = `${mins}:${secs}`;
   function pad(unit) {
-    /* if (unit === 0) {
-      return (unit = "00");
-    }*/
-    return ("0" + unit).length > 2 ? unit : "0" + unit;
+    return String(unit).padStart(2, "0");
   }
   if (cont === 10) {
     clearInterval(intervalId);
@@ -37,13 +34,14 @@ function handleCardClick() {
     game = true;
     startTime = Date.now() - elapsedTime;
     intervalId = setInterval(updateTime, 1000);
+    updateTime(); // update immediately so the display shows 00:00 (or current) right away
   }
   this.classList.toggle("flip");
   flippedCards.push(this);
   removeClickEventListeners();
   clickCounter++;
-  clicks.textContent = `Clicks: ${clickCounter}`;
-  time.textContent = `${mins}:${secs}`;
+  // `.label` already contains the text "Clicks:" so we only put the number here
+  clicks.textContent = clickCounter;
   if (flippedCards.length === 2) {
     cardContainers.forEach((card) =>
       card.removeEventListener("click", handleCardClick)
@@ -106,14 +104,14 @@ btn.addEventListener("click", function () {
   shuffleArray(cards);
   startTime = 0;
   elapsedTime = 0;
-  mins = 0;
-  secs = 0;
+  mins = "00";
+  secs = "00";
   clickCounter = 0;
   game = false;
   flippedCards = [];
   cont = 0;
   time.textContent = "00:00";
-  clicks.textContent = "Clicks: 0";
+  clicks.textContent = 0;
   cardContainers.forEach((card) => {
     card.classList.remove("flip", "matched");
   });

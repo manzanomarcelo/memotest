@@ -107,7 +107,11 @@ body{
 }
 
 .card-front{ transform: rotateY(180deg); }
-.card-back{ background: #ffe9a6; }
+.card-back{ 
+  background: #ffe9a6;
+  transform: rotateY(0deg);
+}
+
 
 .card-front img, .card-back img{
   max-width: 86%;
