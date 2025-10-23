@@ -1,252 +1,132 @@
-* {
-  font-family: sans-serif;
-  font-weight: 100;
-  margin: 0;
-  padding: 0;
+/* === Base reset (gentle) === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+:root{
+  --bg-1: #1f1b2a;
+  --bg-2: #5f2c3e;
+  --accent: #ffb400;
+  --card-bg: #eaf6f6;
+  --card-border: #ffb400;
+  --text: #f6f6f9;
+  --muted: #c9c9d4;
+  --radius: 14px;
+  --gap: 16px;
+  --card-w: clamp(84px, 9.5vw, 140px);
+  --card-h: calc(var(--card-w) * 1.2);
+  --shadow: 0 6px 24px rgba(0,0,0,.25);
 }
-body {
-  background-image: linear-gradient(
-    to right,
-    rgb(123, 60, 99),
-    rgb(207, 100, 29)
-  );
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
 
-@media only screen and (max-width: 600px) {
-  .clicks {
-    top: 10px;
-    left: 75px;
-    font-size: 5px;
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-  }
-
-  .timer {
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: right;
-    font-size: 5px;
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-  }
-  .btn {
-    top: 10px;
-    right: 75px;
-    transform: translateX(50%);
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-    padding: 10px;
-    font-size: small;
-  }
-
-  .cards-section {
-    padding: 50px;
-    grid-template-columns: repeat(5, 50px);
-  }
-
-  .card-container {
-    height: 90px;
-  }
-  .card-front {
-    background-color: rgb(115, 202, 195);
-    border-radius: 3% 10px;
-    border: solid 1px rgb(239, 170, 6);
-  }
-  .card-back {
-    border: solid 1px rgb(239, 170, 6);
-    border-radius: 3% 10px;
-    background-color: rgb(115, 202, 195);
-    backface-visibility: hidden;
-  }
-  .card-container img {
-    height: 30px;
-    width: 30px;
-  }
-
-  .card-front img {
-    height: 18px;
-    width: 25.5px;
-  }
-
-  .card-back img {
-    height: 27px;
-    width: 27px;
-  }
+/* === App container === */
+.app{
+  width: min(1100px, 96vw);
+  display: grid;
+  gap: var(--gap);
 }
-@media only screen and (min-width: 601px) {
-  .clicks {
-    top: 10px;
-    left: 75px;
-    font-size: 5px;
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-    width: 50px;
-    text-align: center;
-  }
 
-  .timer {
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: right;
-    font-size: 10px;
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-    width: 50px;
-    text-align: center;
-  }
-  .btn {
-    top: 10px;
-    right: 95px;
-    transform: translateX(50%);
-    background-color: rgb(115, 202, 195);
-    border: solid 1px rgb(239, 170, 6);
-    padding: 10px;
-    font-size: small;
-    width: 140px;
-    text-align: center;
-  }
-
-  .cards-section {
-    padding: 50px;
-    grid-template-columns: repeat(5, 50px);
-    gap: 50px;
-  }
-
-  .card-container {
-    height: 120px;
-    width: 80px;
-  }
-  .card-front {
-    background-color: rgb(115, 202, 195);
-    border-radius: 3% 10px;
-    border: solid 1px rgb(239, 170, 6);
-  }
-  .card-back {
-    border: solid 1px rgb(239, 170, 6);
-    border-radius: 3% 10px;
-    background-color: rgb(115, 202, 195);
-    backface-visibility: hidden;
-  }
-  .card-container img {
-    height: 30px;
-    width: 30px;
-  }
-
-  .card-front img {
-    height: 18px;
-    width: 25.5px;
-  }
-
-  .card-back img {
-    height: 27px;
-    width: 27px;
-  }
+/* === HUD (timer, clicks, new game) === */
+.hud{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 12px 16px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
 }
-@media only screen and (min-width: 992px) {
-  .button-container {
-    text-align: center;
-    margin: 15px 0;
-  }
 
-  .btn {
-    background-color: rgb(115, 202, 195);
-    border: solid 5px rgb(239, 170, 6);
-    padding: 50px;
-    font-size: large;
-    position: relative;
-    right: 50px;
-    top: 85px;
-    width: 150px;
-    height: 70px;
-  }
-  .clicks {
-    width: 100px;
-    text-align: right;
-    font-size: 5rem;
-    padding: 15px;
-    position: relative;
-    left: 55px;
-    top: 275px;
-    background-color: rgb(115, 202, 195);
-    border: solid 5px rgb(239, 170, 6);
-  }
-
-  .timer {
-    text-align: right;
-    font-size: 4rem;
-    padding: 15px;
-    position: fixed;
-    top: 75px;
-    left: 75px;
-    background-color: rgb(115, 202, 195);
-    border: solid 5px rgb(239, 170, 6);
-  }
-
-  .cards-section {
-    display: grid;
-    grid-template-columns: repeat(5, 200px);
-    grid-gap: 5px;
-    justify-content: center;
-    margin-top: 50px;
-  }
-
-  .card-container {
-    height: 90px;
-    width: 120px;
-    transition: all 1s ease;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-  }
-  .card-front {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgb(115, 202, 195);
-    border-radius: 3% 10px;
-    border: solid 4px rgb(239, 170, 6);
-  }
-  .card-back {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border: solid 4px rgb(239, 170, 6);
-    border-radius: 3% 10px;
-    background-color: rgb(115, 202, 195);
-    backface-visibility: hidden;
-  }
-
-  .card-container img {
-    height: 90px;
-    width: 120px;
-  }
-  .card-front img {
-    border-radius: 3% 10px;
-    height: 60px;
-    width: 100px;
-    transform: rotateY(180deg);
-  }
-  .card-back img {
-    height: 90px;
-    width: 120px;
-    cursor: pointer;
-  }
-  .card-back img:hover {
-    transform: scale(1.025);
-  }
-
-  .card-container.flip {
-    transform: rotateY(180deg);
-  }
+.stat{
+  display:flex; align-items:center; gap:10px;
+  font-weight: 600;
+  font-size: clamp(16px, 2.2vw, 24px);
 }
+.timer, .clicks{ color: var(--text); }
+.label{ color: var(--muted); font-weight:500; }
+
+/* Button */
+.btn{
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight:600;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .08s ease, background .2s ease;
+}
+.btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.12); }
+.btn:active{ transform: translateY(0); }
+
+/* === Board grid === */
+.board{
+  display: grid;
+  grid-template-columns: repeat(5, var(--card-w)); /* 5 cards per row */
+  grid-auto-rows: var(--card-h);                   /* consistent row height */
+  gap: var(--gap);
+  justify-content: center; 
+}
+
+/* === Card === */
+.card{
+  perspective: 1000px;
+  width: var(--card-w);
+  height: var(--card-h);
+}
+
+.card-container{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .5s ease;
+}
+
+.card-container.flip{ transform: rotateY(180deg); }
+.card-container.matched{ outline: 2px solid #6bd36b; filter: saturate(1.1); }
+
+/* Faces */
+.card-front, .card-back{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  backface-visibility: hidden;
+  box-shadow: var(--shadow);
+}
+
+.card-front{ transform: rotateY(180deg); }
+.card-back{ background: #ffe9a6; }
+
+.card-front img, .card-back img{
+  max-width: 86%;
+  max-height: 86%;
+  user-select: none;
+  pointer-events: none; /* click goes to container */
+}
+
+/* Subtle hover */
+.card:hover .card-back { transform: translateY(-1px); }
+
+/* Mobile tweaks */
+@media (max-width: 520px){
+  :root{ --gap: 12px; }
+  .hud{ flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
+}
+
+/* Optional: on very small screens, fall back to 4 columns to avoid overflow */
+@media (max-width: 520px){
+  .board{ grid-template-columns: repeat(4, minmax(72px, 1fr)); }
+}
+
