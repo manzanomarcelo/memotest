@@ -142,7 +142,7 @@ btn.addEventListener("click", function () {
   time.textContent = "00:00";
   clicks.textContent = 0;
   cardContainers.forEach((card) => {
-    card.classList.remove("flip", /*"matched"*/);
+    card.classList.remove("flip");
   });
   addClickEventListenersToCards();
   const shuffledCards = shuffleArray(cards);
