@@ -100,15 +100,34 @@ function shuffleArray(array) {
   }
   return array;
 }
+
+function showAllCards() {
+  // Disable clicks while cards are shown
+  cardContainers.forEach(card => {
+    card.removeEventListener("click", handleCardClick);
+  });
+  
+  // Show all cards
+  cardContainers.forEach(card => {
+    card.classList.add("flip");
+  });
+
+  // After 3 seconds, hide cards and enable clicking
+  setTimeout(() => {
+    cardContainers.forEach(card => {
+      card.classList.remove("flip");
+      card.addEventListener("click", handleCardClick);
+    });
+  }, 4000);
+}
 const cardsContainer = document.querySelector(".cards-section");
 const cards = Array.from(document.querySelectorAll(".card"));
 const shuffledCards = shuffleArray(cards);
 shuffledCards.forEach((card) => {
   cardsContainer.appendChild(card);
 });
-cardContainers.forEach((card) =>
-  card.addEventListener("click", handleCardClick)
-);
+// Show all cards for 3 seconds when game loads
+showAllCards();
 btn.addEventListener("click", function () {
   clearInterval(intervalId);
   shuffleArray(cards);
@@ -130,4 +149,6 @@ btn.addEventListener("click", function () {
   shuffledCards.forEach((card) => {
     cardsContainer.appendChild(card);
   });
+  // Show all cards for 3 seconds when new game starts
+  showAllCards();
 });
