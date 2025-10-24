@@ -93,7 +93,6 @@ body{
 }
 
 .card-container.flip{ transform: rotateY(180deg); }
-.card-container.matched{ outline: 2px solid #6bd36b; filter: saturate(1.1); }
 
 /* Faces */
 .card-front, .card-back{
