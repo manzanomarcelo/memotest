@@ -3,6 +3,13 @@ const time = document.querySelector(".timer");
 const cardContainers = document.querySelectorAll(".card-container");
 const btn = document.querySelector(".btn");
 const clicks = document.querySelector(".clicks");
+const sound = {
+  match: new Audio("audio/match.mp3"),
+  flip: new Audio("audio/flip.mp3"),
+  win: new Audio("audio/winner.mp3"),
+  error: new Audio("audio/error.mp3"),
+}
+
 let startTime = 0;
 let elapsedTime = 0;
 let mins = "00";
@@ -12,6 +19,16 @@ let intervalId;
 let flippedCards = [];
 let cont = 0;
 let clickCounter = 0;
+
+function playAud(aud) {
+  const node = aud.cloneNode();
+  node.volume = 0.6;         
+  node.play().catch(()=>{});
+}
+window.addEventListener('click', () => {
+  sound.flip.play().then(a=>a && a.pause()).catch(()=>{});
+}, { once: true });
+
 function updateTime() {
   elapsedTime = Date.now() - startTime;
   secs = Math.floor((elapsedTime / 1000) % 60);
@@ -40,6 +57,7 @@ function handleCardClick() {
   flippedCards.push(this);
   removeClickEventListeners();
   clickCounter++;
+  playAud(sound.flip);
   // `.label` already contains the text "Clicks:" so we only put the number here
   clicks.textContent = clickCounter;
   if (flippedCards.length === 2) {
@@ -66,9 +84,12 @@ function handleCardClick() {
           const finalSecs = String(Math.floor((elapsedTime / 1000) % 60)).padStart(2, "0");
           const finalMins = String(Math.floor((elapsedTime / (1000 * 60)) % 60)).padStart(2, "0");
           time.textContent = `${finalMins}:${finalSecs}`;
+          playAud(sound.win); //audio feedback on win
         }
       }, 500);
+      playAud(sound.match);
     } else {
+      playAud(sound.error);
       setTimeout(() => {
         flippedCards.forEach((card) => {
           card.classList.remove("flip");
