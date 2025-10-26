@@ -139,7 +139,7 @@ function showAllCards() {
       card.classList.remove("flip");
       card.addEventListener("click", handleCardClick);
     });
-  }, 4000);
+  }, 3000);
 }
 const cardsContainer = document.querySelector(".cards-section");
 const cards = Array.from(document.querySelectorAll(".card"));
