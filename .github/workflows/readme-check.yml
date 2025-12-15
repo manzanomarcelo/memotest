@@ -1,0 +1,32 @@
+name: README check
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  readme-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name : Checkout
+      - uses: actions/checkout@4
+    
+      - name: Ensure README exists
+        run: test -f README.md
+
+      - name: Fail on trailing spaces
+        run: |
+          if grep -nE " +$" README.md; then
+            echo "Trailing spaces found in README.md"
+            exit 1
+          fi
+
+      - name: Fail on very long lines (120+)
+        run: |
+          if awk 'length($0) > 120 {print NR ":" $0; bad=1} END{exit bad}' README.md; then
+            echo "Line length OK"
+          else
+            echo "Lines longer than 120 chars found"
+            exit 1
+          fi
