@@ -1,223 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="description"
+      content="Juego de memoria responsive con banderas, records por dificultad y soporte de teclado."
+    />
+    <meta name="theme-color" content="#1f1b2a" />
     <link rel="stylesheet" href="style.css" />
-    <title>MemoTest</title>
+    <title>MemoTest | Juego de memoria</title>
   </head>
- <body>
-  <div class="app">
-    <div class="hud">
-  <div class="stat"><span class="label">Time:</span><span class="timer">00:00</span></div>
-  <div class="stat"><span class="label">Clicks:</span><span class="clicks">0</span></div>
-      <button class="btn" id="new-game">🔄 New game</button>
+  <body>
+    <main class="app">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">Juego responsive</p>
+          <h1>MemoTest</h1>
+          <p class="intro">
+            Memorizá las banderas, encontrá todas las parejas y tratá de mejorar
+            tu marca en cada dificultad.
+          </p>
+        </div>
+        <p class="assistive-copy" id="game-instructions">
+          Usá las flechas del teclado para moverte, Enter o espacio para girar
+          una carta y Escape para cerrar el resumen final.
+        </p>
+      </header>
+
+      <section class="hud" aria-label="Panel de control del juego">
+        <div class="stat">
+          <span class="label">Tiempo</span>
+          <span class="timer">00:00</span>
+        </div>
+        <div class="stat">
+          <span class="label">Movimientos</span>
+          <span class="moves">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Parejas</span>
+          <span class="pairs-found">0/8</span>
+        </div>
+        <div class="stat">
+          <span class="label">Record</span>
+          <span class="best-summary">Sin marca</span>
+        </div>
+
+        <div class="difficulty">
+          <label for="difficulty-select">Dificultad</label>
+          <select id="difficulty-select">
+            <option value="easy">Facil (4 parejas)</option>
+            <option value="medium" selected>Media (8 parejas)</option>
+            <option value="hard">Dificil (10 parejas)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-secondary" id="toggle-sound" type="button" aria-pressed="true">
+          Sonido activado
+        </button>
+        <button class="btn" id="new-game" type="button">Nueva partida</button>
+      </section>
+
+      <section class="status-bar" aria-live="polite" aria-atomic="true">
+        <p id="status-message">Memorizá las cartas. La partida empieza enseguida.</p>
+      </section>
+
+      <section
+        id="cards-section"
+        class="board"
+        aria-label="Tablero del juego MemoTest"
+        aria-describedby="game-instructions"
+      >
+        <!-- Cards will be generated dynamically -->
+      </section>
+    </main>
+
+    <div
+      id="win-modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="win-title"
+      aria-describedby="win-summary"
+      hidden
+    >
+      <div class="modal-content">
+        <p class="eyebrow">Partida completada</p>
+        <h2 id="win-title">Muy bien</h2>
+        <p id="win-summary">Encontraste todas las parejas del tablero.</p>
+
+        <div class="stats modal-stats">
+          <p>Dificultad: <span id="final-difficulty"></span></p>
+          <p>Tiempo: <span id="final-time"></span></p>
+          <p>Movimientos: <span id="final-moves"></span></p>
+          <p>Mejor tiempo: <span id="best-time"></span></p>
+          <p>Mejores movimientos: <span id="best-moves"></span></p>
+        </div>
+
+        <div class="modal-actions">
+          <button id="play-again" class="btn" type="button">Jugar de nuevo</button>
+        </div>
+      </div>
     </div>
-    
-        <section id="cards-section" class="cards-section board" role="region" aria-label="Memory cards board">
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-argentina.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-argentina.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Bolivia.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Bolivia.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Brazil.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Brazil.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Denmark.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Denmark.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-finland.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-finland.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Iceland.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Iceland.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Norway.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Norway.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Paraguay.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/Flag-Paraguay.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-sweden.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-sweden.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-uruguay.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-container">
-          <div class="card-front">
-            <img src="images/flag-uruguay.webp" />
-          </div>
-          <div class="card-back">
-            <img src="images/Orange_question_mark.svg.png" />
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+
     <script src="script.js"></script>
   </body>
 </html>
