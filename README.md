@@ -1,57 +1,92 @@
 ```markdown
 # Memotest Pi Server Homelab
 
-A Raspberry Pi 4 homelab project focused on practical Linux, Docker, networking, Git, CI/CD, automation and cloud infrastructure skills.
+A Raspberry Pi 4 homelab used to practice Linux administration, Docker, networking,
+GitHub Actions, automation, Azure and Terraform through a real deployed application.
 
-The Memotest web application is used as the workload deployed and managed on the server.
+Memotest is the workload running on the server.
 
-## Project Goals
+---
 
-The objective of this project is to practice how a small Linux server is configured, operated, secured, automated and troubleshot.
+## Overview
 
-The project focuses on:
+This project is focused on learning how a small Linux server is:
 
-- Linux server administration
-- Docker and Docker Compose
-- Git and GitHub
-- GitHub Actions
-- Networking and SSH
-- Storage management
-- Bash and systemd
-- Azure
-- Terraform
-- Troubleshooting
-- Monitoring and observability
+- configured
+- secured
+- containerized
+- operated remotely
+- automated
+- monitored
+- connected to cloud infrastructure
 
-## Current Architecture
+The goal is not only to run an application, but to understand how the infrastructure
+works and how to troubleshoot it.
+
+---
+
+## Architecture
 
 ```text
-LAN client
-    |
-    | HTTP :80
-    v
-Raspberry Pi 4
-    |
-    | Docker port mapping 80:80
-    v
-Memotest container
-    |
-    v
-Nginx
-    |
-    v
-HTML / CSS / JavaScript application
+                    Local Network
+                         │
+                         │ HTTP :80
+                         ▼
+                ┌─────────────────┐
+                │ Raspberry Pi 4  │
+                │ Debian 13 ARM64 │
+                └────────┬────────┘
+                         │
+                         │ Docker Compose
+                         ▼
+                ┌─────────────────┐
+                │ Memotest        │
+                │ Nginx Container │
+                └────────┬────────┘
+                         │
+                         ▼
+                HTML / CSS / JavaScript
 ```
 
-## Hardware and Operating System
+---
 
-- Raspberry Pi 4 Model B
-- 2 GB RAM
-- 16 GB microSD for the operating system
-- 500 GB external SATA HDD connected through USB 3.0
-- Raspberry Pi OS Lite 64-bit
-- Debian GNU/Linux 13
-- ARM64 / `aarch64`
+## Technology Stack
+
+| Area | Technology |
+|---|---|
+| Server | Raspberry Pi 4 Model B |
+| Operating system | Raspberry Pi OS Lite / Debian 13 |
+| Architecture | ARM64 / `aarch64` |
+| Containers | Docker |
+| Orchestration | Docker Compose |
+| Web server | Nginx |
+| Source control | Git / GitHub |
+| CI/CD | GitHub Actions |
+| Automation | Bash / systemd |
+| Cloud | Microsoft Azure |
+| Infrastructure as Code | Terraform |
+
+---
+
+## Hardware
+
+| Component | Configuration |
+|---|---|
+| Raspberry Pi | Raspberry Pi 4 Model B |
+| RAM | 2 GB |
+| OS storage | 16 GB microSD |
+| Data storage | 500 GB SATA HDD via USB 3.0 |
+| Network | Ethernet |
+
+The external HDD is mounted at:
+
+```text
+/srv
+```
+
+Docker and application data are kept on the HDD instead of the microSD.
+
+---
 
 ## Application
 
@@ -71,78 +106,82 @@ images/
 audio/
 ```
 
-## Containerization
+---
 
-The application runs inside an Nginx Docker container.
+## Container Deployment
 
-Docker Compose is used to build and manage the service.
+The application runs inside an Nginx container managed by Docker Compose.
 
-Current Compose configuration:
+Current deployment:
 
-- Service: `memotest`
-- Image: `memotest:1.0`
-- Host port: `80`
-- Container port: `80`
-- Restart policy: `unless-stopped`
+| Setting | Value |
+|---|---|
+| Service | `memotest` |
+| Image | `memotest:1.0` |
+| Host port | `80` |
+| Container port | `80` |
+| Restart policy | `unless-stopped` |
 
-The image is built from the repository using the included `Dockerfile`.
-
-## Storage
-
-The external HDD is mounted at:
+Deployment flow:
 
 ```text
-/srv
+Source code
+    │
+    ▼
+Docker build
+    │
+    ▼
+Nginx image
+    │
+    ▼
+Docker Compose
+    │
+    ▼
+Memotest on port 80
 ```
 
-Important server directories:
-
-```text
-/srv/apps
-/srv/docker
-/srv/containerd
-/srv/backups
-/srv/logs
-```
-
-Docker stores its data under:
-
-```text
-/srv/docker
-```
-
-containerd stores its data under:
-
-```text
-/srv/containerd
-```
-
-The repository is currently located on the Pi at:
-
-```text
-/srv/apps/memotest
-```
+---
 
 ## Networking
 
-The Raspberry Pi is connected through Ethernet.
+The Raspberry Pi is connected to the LAN through Ethernet.
 
-Current LAN address:
+| Service | Address / Port |
+|---|---|
+| Raspberry Pi | `192.168.50.172` |
+| SSH | TCP `22` |
+| Memotest | TCP `80` |
+| Hostname | `pi-server.local` |
 
-```text
-192.168.50.172
-```
-
-Available services:
-
-```text
-SSH: TCP 22
-Memotest: TCP 80
-```
-
-The Pi uses a DHCP reservation on the router.
+The IP address is maintained through a DHCP reservation on the router.
 
 There is currently no public Internet exposure or router port forwarding.
+
+---
+
+## Storage Layout
+
+```text
+/srv
+├── apps
+│   └── memotest
+├── docker
+├── containerd
+├── backups
+└── logs
+```
+
+Important paths:
+
+| Purpose | Path |
+|---|---|
+| Repository | `/srv/apps/memotest` |
+| Docker data | `/srv/docker` |
+| containerd data | `/srv/containerd` |
+| Backups | `/srv/backups` |
+| Logs | `/srv/logs` |
+
+---
 
 ## Security
 
@@ -150,10 +189,13 @@ Current security measures include:
 
 - SSH key authentication
 - SSH password authentication disabled
-- Root SSH login disabled
-- No public port forwarding
-- Secrets and environment files excluded from Git
-- Application and Docker runtime data kept outside the repository
+- root SSH login disabled
+- no public port forwarding
+- secrets excluded from Git
+- environment files excluded through `.gitignore`
+- runtime data stored outside the Git repository
+
+---
 
 ## Repository Structure
 
@@ -161,6 +203,7 @@ Current security measures include:
 .
 ├── .github/
 │   └── workflows/
+│       └── readme-check.yml
 ├── audio/
 ├── images/
 ├── .dockerignore
@@ -173,69 +216,64 @@ Current security measures include:
 └── README.md
 ```
 
-## Deployment
-
-The application is deployed using Docker Compose.
-
-Source changes are deployed by rebuilding the Docker image and recreating the Compose service.
-
-Current deployment flow:
-
-```text
-Edit source
-    |
-    v
-Build Docker image
-    |
-    v
-Recreate Compose service
-    |
-    v
-Verify container
-    |
-    v
-Test application
-```
+---
 
 ## GitHub Actions
 
-A basic GitHub Actions workflow currently validates the repository README.
+The repository currently contains a basic GitHub Actions workflow that runs on:
 
-It runs on pushes to `main` and on pull requests.
+- pushes to `main`
+- pull requests
 
-Current checks include:
+Current checks:
 
-- README exists
-- No trailing spaces
-- No lines longer than 120 characters
+- verifies that `README.md` exists
+- detects trailing spaces
+- checks for lines longer than 120 characters
 
-Automated application deployment to the Raspberry Pi is not configured yet.
+Automated deployment to the Raspberry Pi will be added in a later phase.
 
-## Current Status
+---
 
-Completed:
+## Project Progress
 
-- Raspberry Pi OS installation and Linux base configuration
-- SSH remote administration
-- SSH key authentication and hardening
-- External HDD configuration and persistent mounting
-- Memotest deployment with Nginx
-- Docker installation
-- Docker and containerd storage migration to the external HDD
-- Memotest containerization
-- Docker Compose deployment
-- Repository cleanup and Git ignore rules
-- Basic GitHub Actions validation
+### Completed
 
-## Roadmap
+- [x] Raspberry Pi OS installation
+- [x] Linux base configuration
+- [x] External HDD setup
+- [x] Persistent `/srv` mount
+- [x] SSH key authentication
+- [x] SSH hardening
+- [x] Nginx application deployment
+- [x] Docker installation
+- [x] Docker storage moved to external HDD
+- [x] containerd storage moved to external HDD
+- [x] Memotest containerization
+- [x] Docker Compose deployment
+- [x] Git repository cleanup
+- [x] Basic GitHub Actions validation
 
-Planned work includes:
+### Planned
 
-- GitHub Actions CI/CD
-- Automated deployment to the Raspberry Pi
-- Bash and systemd automation
-- Azure integration
-- Terraform infrastructure provisioning
-- Monitoring and observability
-- Additional security improvements
+- [ ] GitHub Actions CI/CD
+- [ ] Automated deployment to the Raspberry Pi
+- [ ] Bash automation
+- [ ] systemd automation
+- [ ] Azure integration
+- [ ] Terraform infrastructure
+- [ ] Monitoring and observability
+- [ ] Additional security improvements
+
+---
+
+## Project Purpose
+
+This homelab is part of my practical preparation for roles involving:
+
+- IT Operations
+- Linux administration
+- Cloud Support
+- Infrastructure
+- Junior Platform / DevOps
 ```
