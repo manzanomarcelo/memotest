@@ -1,0 +1,9 @@
+services:
+  memotest:
+    build:
+      context: .
+    image: memotest:1.0
+    container_name: memotest
+    ports:
+      - "80:80"
+    restart: unless-stopped

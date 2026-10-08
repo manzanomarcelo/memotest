@@ -101,7 +101,7 @@ body.modal-open {
   backdrop-filter: blur(10px);
 }
 
-.hud > * {
+.hud>* {
   min-width: 0;
 }
 
@@ -230,12 +230,9 @@ body.modal-open {
     filter var(--transition-fast);
 }
 
-.card-button:hover {
-  filter: brightness(1.03);
-}
-
 .card-button.is-flipped {
   transform: rotateY(180deg);
+  .car
 }
 
 .card-button.matched {
@@ -329,7 +326,7 @@ body.modal-open {
   font-size: clamp(1.8rem, 4vw, 2.4rem);
 }
 
-.modal-content > p {
+.modal-content>p {
   margin-top: 12px;
   color: var(--muted);
   line-height: 1.6;
@@ -416,6 +413,7 @@ body.modal-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
