@@ -4,6 +4,8 @@ services:
       context: .
     image: memotest:1.0
     container_name: memotest
+    invalid_option: true
     ports:
       - "80:80"
     restart: unless-stopped
+    
