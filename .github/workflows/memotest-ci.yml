@@ -1,0 +1,38 @@
+name: Memotest CI
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure files exist
+        run: |
+          test -f Dockerfile
+          test -f compose.yaml
+          test -f index.html
+          test -f style.css
+          test -f script.js
+
+      - name: Validate compose.yaml
+        run: docker compose -f compose.yaml config --quiet
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4 
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build ARM64 Docker image
+        uses: docker/build-push-action@v7
+        with: 
+          context: .
+          platforms: linux/arm64
+          push: false
+          
